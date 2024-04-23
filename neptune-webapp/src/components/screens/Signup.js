@@ -8,9 +8,7 @@ const SignIn = () => {
   const [name, setName] = useState("");
   const [password, setPasword] = useState("");
   const [email, setEmail] = useState("");
-  const [image, setImage] = useState(
-    "https://img.freepik.com/free-photo/3d-illustration-teenager-with-funny-face-glasses_1142-50955.jpg?t=st=1713721816~exp=1713725416~hmac=57bd57f896c5a5685bb087b42a9510cb3fc0ed5e266cbb604ff1db0a4cc1a3a6&w=740"
-  );
+  const [image, setImage] = useState("");
   const [url, setUrl] = useState(undefined);
   const serviceURL = window?.configs?.serviceURL
     ? window.configs.serviceURL
@@ -23,14 +21,15 @@ const SignIn = () => {
   const uploadPic = () => {
     const data = new FormData();
     data.append("file", image);
-    data.append("upload_preset", "new-insta");
-    data.append("cloud_name", "cnq");
+    data.append("upload_preset", config.upload_preset);
+    data.append("cloud_name", config.cloud_name);
     fetch(config.cloudinaryApiUrl, {
       method: "post",
       body: data,
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setUrl(data.url);
       })
       .catch((err) => {
@@ -75,12 +74,12 @@ const SignIn = () => {
       });
   };
   const PostData = () => {
-    // if (image) {
-    //   uploadPic();
-    // } else {
-    //   uploadFields();
-    // }
-    uploadFields();
+    if (image) {
+      uploadPic();
+    } else {
+      uploadFields();
+    }
+    // uploadFields();
   };
 
   return (
@@ -105,15 +104,20 @@ const SignIn = () => {
           value={password}
           onChange={(e) => setPasword(e.target.value)}
         />
-        {/* <div className="file-field input-field">
-          <div className="btn #64b5f6 blue darken-1">
-            <span>Upload pic</span>
-            <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+        {
+          <div className="file-field input-field">
+            <div className="btn #64b5f6 blue darken-1">
+              <span>Upload pic</span>
+              <input
+                type="file"
+                onChange={(e) => setImage(e.target.files[0])}
+              />
+            </div>
+            <div className="file-path-wrapper">
+              <input className="file-path validate" type="text" />
+            </div>
           </div>
-          <div className="file-path-wrapper">
-            <input className="file-path validate" type="text" />
-          </div>
-        </div> */}
+        }
         <button
           className="btn waves-effect waves-light #64b5f6 blue darken-1"
           onClick={() => PostData()}

@@ -47,8 +47,8 @@ const CretePost = () => {
   const postDetails = () => {
     const data = new FormData();
     data.append("file", image);
-    data.append("upload_preset", "new-insta");
-    data.append("cloud_name", "cnq");
+    data.append("upload_preset", config.upload_preset);
+    data.append("cloud_name", config.cloud_name);
     fetch(config.cloudinaryApiUrl, {
       method: "post",
       body: data,
